@@ -1,3 +1,5 @@
+// creates the database schema
+
 package foo;
 import java.sql.SQLException;
 
