@@ -1,3 +1,5 @@
+//Data Access Object to read from and write to the database.
+
 package foo;
 
 import java.sql.*;
@@ -16,8 +18,10 @@ public class TickDAO {
     private static String dbUrl;
 
     static {
+		// line to set up a Redis connection pool:
 		Pattern REDIS_URL_PATTERN = Pattern.compile("^redis://([^:]*):([^@]*)@([^:]*):([^/]*)(/)?");
 		Matcher matcher = REDIS_URL_PATTERN.matcher(System.getenv("REDISTOGO_URL"));
+		// REDISTOGO_URL - The environment variable is parsed using regular expressions when the connection pool is created.
 		matcher.matches();
 		
 		Config config = new Config();
@@ -32,7 +36,8 @@ public class TickDAO {
 		group2 = matcher.group(2);  //redis.clients.jedis.exceptions.JedisDataException: ERR Client sent AUTH, but no password is set
 		group2 = null;				//redis.clients.jedis.exceptions.JedisDataException: ERR Client sent AUTH, but no password is set
 		jedisPool = new JedisPool(config, matcher.group(3), Integer.parseInt(matcher.group(4)), Protocol.DEFAULT_TIMEOUT, group2);
-        dbUrl = System.getenv("DATABASE_URL");
+        
+		dbUrl = System.getenv("DATABASE_URL");
         dbUrl = dbUrl.replaceAll("postgres://(.*):(.*)@(.*)", "jdbc:postgresql://$3?user=$1&password=$2");
     }
  	
@@ -41,6 +46,8 @@ public class TickDAO {
 		return getTickcountFromDb();
 	}
 	*/
+	// method now checks for the tickcount in Redis
+	// If it doesn't find it in the cache, it executes a database query and stores the value into Redis. The value is stored for 30 seconds.
     public int getTickCount() throws SQLException {
         Jedis jedis = jedisPool.getResource();
         int tickcount = 0;

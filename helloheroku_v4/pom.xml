@@ -30,6 +30,7 @@
             <artifactId>postgresql</artifactId>
             <version>9.0-801.jdbc4</version>
         </dependency>
+		<!-- add the Jedis client library for Redis -->
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
@@ -61,10 +62,12 @@
                             <mainClass>foo.Main</mainClass>
                             <name>webapp</name>
                         </program>
+						<!-- startup script for the SchemaCreator class -->
                         <program>
                             <mainClass>foo.SchemaCreator</mainClass>
                             <name>schemaCreator</name>
                         </program>
+						<!-- create a start script for the Ticker class -->
                         <program>
                             <mainClass>foo.Ticker</mainClass>
                             <name>ticker</name>
