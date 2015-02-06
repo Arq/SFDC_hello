@@ -1,3 +1,5 @@
+//Data Access Object to read from and write to the database.
+
 package foo;
 import java.sql.*;
 

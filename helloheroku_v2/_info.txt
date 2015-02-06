@@ -1,0 +1,16 @@
+extended the app to connect to a database
+
+Test Database Access Locally
+	cmd -> ... SFDC_hello\helloheroku_v2\
+	set DATABASE_URL=postgres://foo:foo@localhost/helloheroku	
+	mvn install
+	target\bin\schemaCreator.bat
+	target\bin\webapp.bat
+	refresh http://localhost:8080/ticks.jsp
+	CTRL-C
+
+Test Database Access on Heroku	
+	heroku run "sh target/bin/schemaCreator"
+	refresh http://empty-winter-343.herokuapp.com/ticks.jsp
+	
+	
