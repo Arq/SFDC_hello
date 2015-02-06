@@ -1,0 +1,2 @@
+Procfile is a mechanism for declaring what commands are started when your dynos are run on the Heroku platform.
+In this case, we want Heroku to run the webapp startup script for web dynos.
