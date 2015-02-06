@@ -1,0 +1,27 @@
+
+
+Test Database Access Locally
+	cmd -> ... SFDC_hello\helloheroku_v4\
+	mvn install
+	set REDISTOGO_URL=redis://:@localhost:6379/
+	target\bin\webapp.bat
+	CTRL-C
+	
+	full v2->v3->v4	
+	cmd -> ... SFDC_hello\helloheroku_v4\
+	set DATABASE_URL=postgres://foo:foo@localhost/helloheroku
+	mvn install
+	set REDISTOGO_URL=redis://:@localhost:6379/
+	target\bin\schemaCreator.bat
+	target\bin\webapp.bat
+	refresh http://localhost:8080/ticks.jsp
+	CTRL-C
+
+Test Database Access on Heroku	
+	heroku addons:add redistogo:nano							// Add the free tier of the Redis To Go add-on
+	git add .
+	git commit -m "added Redis support"
+	git push heroku master
+	refresh http://empty-winter-343.herokuapp.com/ticks.jsp
+		// Verify that the number of ticks is only updated every 30 seconds by reloading the page a few times or by restarting the tick worker process.
+

@@ -1,3 +1,5 @@
+//worker Java app that adds a new "tick" to the database once a second
+
 package foo;
 
 public class Ticker {

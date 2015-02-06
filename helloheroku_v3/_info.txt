@@ -1,0 +1,31 @@
+Heroku add-ons enable you to easily extend your app by using other cloud services.
+Extend your app with distributed caching using Redis—an open source, NoSQL-style database. Redis
+is available through the Redis To Go Heroku add-on.
+You will use Redis to cache the number of ticks to reduce the number of database requests. The cache will be set to expire
+after 30 seconds. This means that the tick count will only be updated every 30 seconds.
+
+Test Database Access Locally
+	cmd -> ... SFDC_hello\helloheroku_v3\
+	mvn install
+	target\bin\ticker.bat
+	CTRL-C
+
+	full v2->v3	
+	cmd -> ... SFDC_hello\helloheroku_v3\
+	set DATABASE_URL=postgres://foo:foo@localhost/helloheroku
+	mvn install
+	target\bin\schemaCreator.bat
+	target\bin\ticker.bat
+	target\bin\webapp.bat										// The process should output "tick" to the console once a second.
+	refresh http://localhost:8080/ticks.jsp
+	CTRL-C
+
+Test Database Access on Heroku	
+	tick: sh target/bin/ticker									// Update the Procfile to include the new worker process
+	heroku run "sh target/bin/schemaCreator" --app [app_name] 
+	heroku scale tick=2											// Start two dynos running the "tick" process
+		// Refresh the page and notice that the number of ticks increments faster now that the Ticker processes are also adding new rows to 
+		// the database. You can increase the tick rate further by adding more "tick" workers with the heroku scale command.
+	refresh http://empty-winter-343.herokuapp.com/ticks.jsp
+	heroku ps													// Verify that the worker processes are no longer running:
+
