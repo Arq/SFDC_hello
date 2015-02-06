@@ -1,6 +1,9 @@
 
 
 Test Database Access Locally
+	Redis
+		open redis-server.exe
+		test redis-cli.exe
 	cmd -> ... SFDC_hello\helloheroku_v4\
 	mvn install
 	set REDISTOGO_URL=redis://:@localhost:6379/
